@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+    <parent>
+		<groupId>org.aves</groupId>
+		<artifactId>aves</artifactId>
+		<version>1.1.0</version>
+	</parent>
+	<artifactId>transfer-temp</artifactId>
+	<packaging>bundle</packaging>
+	<name>transfer-temp server</name>
+	<description>specil for transfer projects</description>
+	<version>1.0.0</version>
+    <dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.aves.kestrel</groupId>
+				<artifactId>kestrel-deprepos</artifactId>
+				<version>1.0.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+	<dependencies>
+	  
+	
+	   <dependency>
+			<groupId>org.aves</groupId>
+			<artifactId>transfer-base</artifactId>
+			<version>1.0.0</version>
+		</dependency>				
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-quartz</artifactId>
+		</dependency>
+		
+		 <dependency>
+  						<groupId>org.apache.poi</groupId>
+  						<artifactId>org.aves.org.apache.poi</artifactId>
+ 							 <version>3.9.0.FINAL</version>
+					</dependency>
+		     	                                   
+	</dependencies>	
+	  <build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.felix</groupId>
+					<artifactId>maven-bundle-plugin</artifactId>
+					<extensions>true</extensions>
+					<configuration>
+						<instructions>
+							<!-- <_removeheaders>Private-Package,Include-Resource,Embed-Dependency,Created-By,Bnd-LastModified,Built-By,Tool</_removeheaders> -->
+							<Bundle-Category>Aves :: Pitta :: Transfer</Bundle-Category>
+							<Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
+							<Export-Package>!*</Export-Package>
+						</instructions>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>true</skipTests>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core"
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+	http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<!-- Service providing -->
+	<jaxrs:server id="JAXRSSettleResource" address="/settle">
+		<jaxrs:serviceBeans>
+			<ref component-id="billResource" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+         <ref   component-id="authFilter" />
+        </jaxrs:providers>  
+	</jaxrs:server>
+	
+	<camel:camelContext>
+		<!--<camel:routeBuilder ref="settleRouter" /> -->
+	    <camel:routeBuilder ref="transferRouter" />				
+	</camel:camelContext>
+	
+	<reference id="merchantServerRef" interface="org.aves.transfer.api.IMerchantServer" />
+	<reference id="merchantDeviceServerRef" interface="org.aves.transfer.api.IMerchantDeviceServer" />
+	<reference id="setteleServerRef" interface="org.aves.transfer.api.ISettlesServer" />
+	<reference id="authFilter" interface="javax.ws.rs.container.ContainerResponseFilter" />
+
+
+	<!-- Service required -->
+	<reference id="dataSourceRef" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/transfer)"/>
+
+
+	<!-- Bean Implementation -->
+	<bean id="billRepositoryRef" class="org.aves.transfer.imp.BillRepository">
+		<property name="dataSource" ref="dataSourceRef"/>
+	</bean>
+	
+	<bean id="billServerRef" class="org.aves.transfer.imp.BillServer">
+		<property name="billRepository" ref="billRepositoryRef"/>
+	</bean>
+	
+       <bean id="settleRouter" class="org.aves.transfer.imp.SettleRouter">
+	    <property name="merchantServer" ref="merchantServerRef" />
+		<property name="merchantDeviceServer" ref="merchantDeviceServerRef" />
+		<property name="setteleServer" ref="setteleServerRef" />
+		<property name="billServer" ref="billServerRef" />		
+		<property name="emailaccont" value="jinlizfb01@cdjinli.com" />
+		<property name="emailaccont1" value="jinlizfb02@cdjinli.com" />
+		<property name="emailaccont2" value="jinlizfb03@cdjinli.com" />		
+		<property name="emailpass" value="jlzfbdzd" />
+		<property name="smtp" value="smtp.ym.163.com" />			
+	</bean>
+	
+	  <bean id="transferRouter" class="org.aves.transfer.imp.TransferRouter">
+	    <property name="merchantServer" ref="merchantServerRef" />
+		<property name="merchantDeviceServer" ref="merchantDeviceServerRef" />
+		<property name="setteleServer" ref="setteleServerRef" />
+		<property name="billServer" ref="billServerRef" />		
+		<property name="emailaccont" value="jinlizfb01@cdjinli.com" />
+		<property name="emailaccont1" value="jinlizfb02@cdjinli.com" />
+		<property name="emailaccont2" value="jinlizfb03@cdjinli.com" />		
+		<property name="emailpass" value="jlzfbdzd" />
+		<property name="smtp" value="smtp.ym.163.com" />			
+	</bean>
+	
+	
+	<bean id="billResource" class="org.aves.transfer.imp.BillResource">
+		<property name="merchantServer" ref="merchantServerRef" />
+		<property name="merchantDeviceServer" ref="merchantDeviceServerRef" />
+		<property name="setteleServer" ref="setteleServerRef" />
+		<property name="billServer" ref="billServerRef" />
+		<property name="SHA1Key" value="ZyZeYZd5q7k=" />	
+		<property name="bankfl" value="510000000" />					
+		<!-- <property name="accountname" value="成都啪货网络科技有限公司" />	
+		<property name="bankaccount" value="51001875136051511337"/>		-->					
+		 <property name="accountname" value="成都武侯祠锦里旅游文化经营管理有限公司" />	
+		<property name="bankaccount" value="51001875136051513126"/>	
+	</bean>
+
+
+
+
+
+
+</blueprint>

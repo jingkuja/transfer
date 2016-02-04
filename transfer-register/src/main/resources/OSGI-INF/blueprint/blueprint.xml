@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core"
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+	http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<!-- Service providing -->
+	<jaxrs:server id="JAXRSRegisterResource" address="/transfer">
+		<jaxrs:serviceBeans>
+			<ref component-id="registerResource" />
+		</jaxrs:serviceBeans>
+		<jaxrs:providers>
+         <ref   component-id="authFilter" />
+        </jaxrs:providers>  
+	</jaxrs:server>
+
+	
+	<service ref="merchantServerRef"  interface="org.aves.transfer.api.IMerchantServer"/>
+	<service ref="merchantDeviceServerRef"  interface="org.aves.transfer.api.IMerchantDeviceServer"/>
+	<service ref="setteleServerRef"  interface="org.aves.transfer.api.ISettlesServer"/>
+	<reference id="authFilter" interface="javax.ws.rs.container.ContainerResponseFilter" />
+	
+	
+	<!-- Service required -->
+	<reference id="dataSourceRef" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/transfer)"/>
+
+
+	<!-- Bean Implementation -->
+	<bean id="merchantRepositoryRef" class="org.aves.transfer.imp.MerchantRepository">
+		<property name="dataSource" ref="dataSourceRef"/>
+	</bean>
+	
+	<bean id="posRepositoryRef" class="org.aves.transfer.imp.PosRepository">
+		<property name="dataSource" ref="dataSourceRef"/>
+	</bean>
+	
+	<bean id="setteleRepositoryRef" class="org.aves.transfer.imp.SetteleRepository">
+		<property name="dataSource" ref="dataSourceRef"/>
+	</bean>
+	
+	<bean id="merchantServerRef" class="org.aves.transfer.imp.MerchantServer">
+		<property name="merchantRepository" ref="merchantRepositoryRef"/>
+	</bean>
+	
+	<bean id="merchantDeviceServerRef" class="org.aves.transfer.imp.MerchantDeviceServer">
+		<property name="posRepository" ref="posRepositoryRef"/>
+	</bean>
+	
+	<bean id="setteleServerRef" class="org.aves.transfer.imp.SetteleServer">
+		<property name="setteleRepository" ref="setteleRepositoryRef"/>
+	</bean>
+	
+	<bean id="registerResource" class="org.aves.transfer.imp.RegisterResource">
+		<property name="merchantServer" ref="merchantServerRef" />
+		<property name="merchantDeviceServer" ref="merchantDeviceServerRef" />
+		<property name="setteleServer" ref="setteleServerRef" />
+		<property name="webServiceURL"
+			value="https://115.29.163.102/sei/pitta/registrations" />
+		<property name="SHA1Key" value="ZyZeYZd5q7k=" />
+		
+	</bean>
+
+
+
+
+
+
+</blueprint>

@@ -1,0 +1,103 @@
+DROP TABLE IF EXISTS merchant;
+DROP TABLE IF EXISTS merchantdevice;
+DROP TABLE IF EXISTS settles;
+DROP TABLE IF EXISTS idgenerator;
+DROP TABLE IF EXISTS bill;
+
+
+
+CREATE TABLE idgenerator(
+		scheme                    		VARCHAR(32)		 NOT NULL,
+		id                       		INT		 NOT NULL,
+  PRIMARY KEY (id, scheme)
+);
+
+
+CREATE TABLE merchant(
+		id                      		VARCHAR(16)		 NOT NULL		 PRIMARY KEY,	
+	    status                         	    VARCHAR(2)	     NOT NULL,	    	
+		mname                               VARCHAR(128)     NOT NULL,
+		mcode                               VARCHAR(32)		 NOT NULL,
+		address                         	VARCHAR(256)	 ,
+		contactor                         	VARCHAR(32)		 ,
+		phone                         	    VARCHAR(32)		 ,
+	    createtime                         	VARCHAR(12)	     NOT NULL,
+	    email                         	    VARCHAR(64)	     ,	 
+	    transign                            VARCHAR(2)	    ,	 
+	    tplate                              VARCHAR(2)	     ,
+		kfbank                         	    VARCHAR(128)	 ,
+		accountname                         VARCHAR(128)	 ,
+		kfbaacount                         	VARCHAR(32)		 
+
+);
+
+
+CREATE TABLE merchantdevice(
+		id                      		    VARCHAR(16)		 NOT NULL		 PRIMARY KEY,
+		merchantid                         	VARCHAR(16)		 NOT NULL,		
+		posnum                           	VARCHAR(32)		 NOT NULL,
+		deviceNum                         	VARCHAR(16)		 ,
+		createtime                          VARCHAR(12)		 NOT NULL,
+		status                           	VARCHAR(2)		 NOT NULL
+
+);
+
+CREATE TABLE settles(
+		id                      		    VARCHAR(16)		 NOT NULL		 PRIMARY KEY,
+		merchantid                         	VARCHAR(16)		 NOT NULL,
+		contractNum                         VARCHAR(32)		 ,
+		rebate                         	    VARCHAR(16)		 NOT NULL,
+		rebatea                         	VARCHAR(16)		 NOT NULL,
+		title                               VARCHAR(32)		 NOT NULL,
+		paysrvCode                          VARCHAR(4)		 NOT NULL,
+		paysrvAN                            VARCHAR(32)		 NOT NULL,
+		paysrvAltAN                         VARCHAR(32)		 ,
+		paysrvKey                           VARCHAR(64)		 NOT NULL,	
+		paysrvAgent                         VARCHAR(64)		 ,		
+		excon                               VARCHAR(256)		 ,				
+		signer                              VARCHAR(32)		 ,
+		approver                            VARCHAR(32)		 ,	
+		approvetime                         VARCHAR(12)		 ,		
+	    starttime                           DATETIME		 ,
+		endtime                             DATETIME	     ,
+		createtime                          VARCHAR(12)		 NOT NULL,		
+		status                           	VARCHAR(2)		 NOT NULL
+);
+
+
+CREATE TABLE bill(
+		id                      		    VARCHAR(16)		 NOT NULL		 PRIMARY KEY,
+		merid                         	    VARCHAR(16)		 ,
+		terminal                            VARCHAR(16)		 NOT NULL,
+		postradeNo                          VARCHAR(64)		 NOT NULL,
+		tradetype                           VARCHAR(8)		 NOT NULL,
+		tradetime                           VARCHAR(24)		 NOT NULL,	
+		sum                                 VARCHAR(16)		 NOT NULL,
+		paysrvCode                          VARCHAR(64)		 ,		
+		mfee                                VARCHAR(16)		 ,
+		fee                                 VARCHAR(16)		 ,
+		rate                                VARCHAR(16)		 ,
+		ratea                               VARCHAR(16)		 ,
+		income                              VARCHAR(16)		 ,				
+		transfermer                         VARCHAR(16)		 ,		
+		status                           	VARCHAR(2)		 NOT NULL,
+		sdesc                                  text  ,  
+		createtime                          DATETIME		 NOT NULL  
+);
+
+
+CREATE TABLE auth(
+		id                      		    VARCHAR(16)		 NOT NULL		 PRIMARY KEY,
+		account                         	VARCHAR(16)		 NOT NULL ,
+		password                            VARCHAR(64)		 NOT NULL,
+		aliasname                           VARCHAR(32)		 ,
+		aliasid                             VARCHAR(16)	     ,
+		auth                                VARCHAR(2)		 NOT NULL,	
+		extra                               VARCHAR(64)	 ,
+		status                           	VARCHAR(2)		 NOT NULL,
+		email                               VARCHAR(64)		 ,	 
+		createtime                          DATETIME		 NOT NULL  
+);
+
+
+

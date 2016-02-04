@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.aves.transfer</groupId>
+		<artifactId>transfer</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>transfer-register</artifactId>
+	<packaging>bundle</packaging>
+	<name>transfer register server</name>
+	<description>The server for transfer projects</description>
+
+
+	  <dependencies>	  	  	
+		<dependency>
+			<groupId>org.aves</groupId>
+			<artifactId>transfer-base</artifactId>
+			<version>${project.version}</version>
+		</dependency>				
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient-osgi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+		</dependency>		
+		 <dependency>
+  						<groupId>org.apache.poi</groupId>
+  						<artifactId>org.aves.org.apache.poi</artifactId>
+ 						 <version>3.9.0.FINAL</version>
+	    </dependency>		     	                       		     	                       		     	                                   
+	</dependencies>	
+	   <build>	
+		<plugins>		
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

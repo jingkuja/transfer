@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jaxrs="http://cxf.apache.org/blueprint/jaxrs"
+	xmlns:cxf="http://cxf.apache.org/blueprint/core"
+	xmlns:camel="http://camel.apache.org/schema/blueprint"
+	xsi:schemaLocation="http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd
+	http://cxf.apache.org/blueprint/jaxrs http://cxf.apache.org/schemas/blueprint/jaxrs.xsd
+	http://cxf.apache.org/blueprint/core http://cxf.apache.org/schemas/blueprint/core.xsd
+	http://camel.apache.org/schema/blueprint http://camel.apache.org/schema/blueprint/camel-blueprint.xsd">
+
+	<!-- Service providing -->
+	<jaxrs:server id="JAXRSRegisterResource" address="/auth">
+		<jaxrs:serviceBeans>
+			<ref component-id="authResource" />
+		</jaxrs:serviceBeans>
+	</jaxrs:server>
+
+	
+	<service ref="authServerRef"  interface="org.aves.transfer.api.IAuthServer"/>
+	<service ref="authFilter"  interface="javax.ws.rs.container.ContainerResponseFilter"/>
+	
+	
+	
+	<!-- Service required -->
+	<reference id="dataSourceRef" interface="javax.sql.DataSource" filter="(osgi.jndi.service.name=jdbc/transfer)"/>
+
+	<!-- Bean Implementation -->
+	<bean id="authRepositoryRef" class="org.aves.transfer.imp.AuthRepository">
+		<property name="dataSource" ref="dataSourceRef"/>
+	</bean>
+	
+	
+	<bean id="authServerRef" class="org.aves.transfer.imp.AuthServer">
+		<property name="authRepository" ref="authRepositoryRef"/>
+	</bean>
+		
+	<bean id="authResource" class="org.aves.transfer.imp.AuthResource">
+		<property name="authServer" ref="authServerRef" />			
+	</bean>
+	
+	 <bean id="authFilter" class="org.aves.transfer.imp.AuthFilter">
+     </bean>
+	
+</blueprint>
