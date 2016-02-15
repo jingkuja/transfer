@@ -41,7 +41,7 @@ public class TransferRouter extends RouteBuilder {
 	private static final Logger logger = Logger.getLogger(TransferRouter.class
 			.getName());
 
-	private static final String fielURITemplate = "file:/home/ccb?noop=true&delay=2500";
+	private static final String fielURITemplate = "file:/home/ccb?noop=true&delay=10000";
 
 	/**
 	 *
